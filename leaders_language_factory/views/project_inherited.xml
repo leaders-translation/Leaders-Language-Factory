@@ -19,48 +19,48 @@
             </field>
         </record>
 
-<!--        <record id="view_task_form2_inherit" model="ir.ui.view">-->
-<!--            <field name="name">project.task.form2.inherit</field>-->
-<!--            <field name="model">project.task</field>-->
-<!--            <field name="inherit_id" ref="project.view_task_form2"/>-->
+        <record id="view_task_form2_inherit" model="ir.ui.view">
+            <field name="name">project.task.form2.inherit</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
 
-<!--            <field name="arch" type="xml">-->
-<!--                <xpath expr="//field[@name='state']" position="after">-->
-<!--                    <button name="%(change_request_action)d" string="Refuse" type="action" data-hotkey="l"-->
-<!--                            title="Mark as change requested"-->
-<!--                            invisible="(state != '01_in_progress') or (parent_id == False)"/>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//field[@name='partner_id']" position="attributes">-->
-<!--                    <attribute name="invisible">1</attribute>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//field[@name='user_ids']" position="attributes">-->
-<!--                    <attribute name="readonly">is_project_manager==False</attribute>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//field[@name='date_deadline']" position="attributes">-->
-<!--                    <attribute name="readonly">is_project_manager==False</attribute>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//field[@name='tag_ids']" position="after">-->
-<!--                    <field name="source_attachment_ids" widget="many2many_binary"/>-->
-<!--                    <field name="change_request_reason"-->
-<!--                           invisible="(parent_id== False) or (state not in ('02_changes_requested'))"/>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="after">-->
-<!--                    <field name="task_type" readonly="is_project_manager==False"/>-->
-<!--                    <field name="is_project_manager" invisible="1"/>-->
-<!--                    <field name="num_of_words" invisible="parent_id== False"/>-->
-<!--                    <field name="target_attachment_ids" widget="many2many_binary" invisible="parent_id== False"/>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//page[@name='sub_tasks_page']//tree//field[@name='name']" position="after">-->
-<!--                    <field name="task_type"/>-->
-<!--                </xpath>-->
-<!--                <xpath expr="//page[@name='description_page']" position="after">-->
-<!--                    <page name="translator_mistakes" string="Translator Mistakes"-->
-<!--                          invisible="task_type=='0'">-->
-<!--                        <field name="translation_mistakes" no-label="1"/>-->
-<!--                    </page>-->
-<!--                </xpath>-->
-<!--            </field>-->
-<!--        </record>-->
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <button name="%(change_request_action)d" string="Refuse" type="action" data-hotkey="l"
+                            title="Mark as change requested"
+                            invisible="(state != '01_in_progress') or (parent_id == False)"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_ids']" position="attributes">
+                    <attribute name="readonly">is_project_manager==False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="attributes">
+                    <attribute name="readonly">is_project_manager==False</attribute>
+                </xpath>
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="source_attachment_ids" widget="many2many_binary"/>
+                    <field name="change_request_reason"
+                           invisible="(parent_id== False) or (state not in ('02_changes_requested'))"/>
+                </xpath>
+                <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="after">
+                    <field name="task_type" readonly="is_project_manager==False"/>
+                    <field name="is_project_manager" invisible="1"/>
+                    <field name="num_of_words" invisible="parent_id== False"/>
+                    <field name="target_attachment_ids" widget="many2many_binary" invisible="parent_id== False"/>
+                </xpath>
+                <xpath expr="//page[@name='sub_tasks_page']//tree//field[@name='name']" position="after">
+                    <field name="task_type"/>
+                </xpath>
+                <xpath expr="//page[@name='description_page']" position="after">
+                    <page name="translator_mistakes" string="Translator Mistakes"
+                          invisible="task_type=='0'">
+                        <field name="translation_mistakes" no-label="1"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
 
     </data>
 </odoo>
