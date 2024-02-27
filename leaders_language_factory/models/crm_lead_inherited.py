@@ -56,6 +56,7 @@ class CrmLeadInherited(models.Model):
 
 class InterpreterLine(models.Model):
     _name = "interpreter.line"
+    _description = "Interpreters"
     interpreter_name = fields.Many2one('hr.employee', string="Interpreter", required='1')
     rate = fields.Float(string="Rate")
     lead_id = fields.Many2one('crm.lead')
