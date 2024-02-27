@@ -8,7 +8,7 @@ class SaleOrder(models.Model):
     is_interpretation = fields.Boolean(string='Is Interpretation', related='opportunity_id.is_interpretation',
                                        readonly=True)
     branch = fields.Selection([('0', 'UAE'), ('1', 'Jordan')],
-                              string="Branch", required='1')
+                              string="Branch")
     delivery_type = fields.Selection([('0', 'Soft Copy'), ('1', 'Printed or E-copy')],
                                      string="Delivery Type")
     used_papers = fields.Integer(string="Used Papers")
