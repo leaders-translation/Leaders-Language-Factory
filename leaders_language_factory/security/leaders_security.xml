@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="rule_user_see_his_own_tasks" model="ir.rule">
+                <field name="name">Project/Task:  User update own task only</field>
+                <field name="model_id" ref="project.model_project_task"/>
+                <field name="global" eval="False"/>
+                <field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+                <field name="perm_read" eval="True"/>
+                <field name="perm_write" eval="True"/>
+                <field name="perm_create" eval="False"/>
+                <field name="perm_unlink" eval="True"/>
+           <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+        </record>
+
+    </data>
+</odoo>
