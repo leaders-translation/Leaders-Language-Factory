@@ -19,14 +19,18 @@ class ProjectProjectInherited(models.Model):
         default='followers')
 
     is_project_manager = fields.Boolean(compute='_check_is_project_manager')
-    source_attachment_ids = fields.Many2many('ir.attachment', 'project_source_attachment_rel', string='Source Files')
+    source_attachment_ids = fields.Many2many('ir.attachment', 'project_source_attachment_rel',
+                                             column1='project_id', column2='attachment_id', string='Source Files')
     target_attachment_ids = fields.Many2many('ir.attachment', relation='project_target_attachment_rel',
+                                             column1='project_id', column2='attachment_id',
                                              string='Target Files')
 
     proofreader_attachment_ids = fields.Many2many('ir.attachment', relation='project_final_attachment_rel',
-                                                  string='Final Files')
+                                                  column1='project_id', column2='attachment_id'
+                                                  , string='Final Files')
     quality_attachment = fields.Many2many('ir.attachment', relation='project_quality_attachment_rel',
-                                          string='Quality Document')
+                                          column1='project_id', column2='attachment_id'
+                                          , string='Quality Document')
 
     def _check_is_project_manager(self):
         if self.env.user.has_group('project.group_project_manager'):
@@ -91,41 +95,39 @@ class ProjectTaskInherited(models.Model):
         else:
             return super(ProjectTaskInherited, self).write(vals)
 
-
-class ProjectTargetAttachmentRel(models.Model):
-    _name = 'project.target.attachment.rel'
-
-    project_project_id = fields.Many2one('project.project')
-    ir_attachment_id = fields.Many2one('ir.attachment')
-
-
-
-class ProjectSourceAttachmentRel(models.Model):
-    _name = 'project.source.attachment.rel'
-    project_project_id = fields.Many2one('project.project')
-    ir_attachment_id = fields.Many2one('ir.attachment')
-
-
-
-class ProjectQualityAttachmentRel(models.Model):
-    _name = 'project.quality.attachment.rel'
-    project_project_id = fields.Many2one('project.project')
-    ir_attachment_id = fields.Many2one('ir.attachment')
-
-
-class ProjectFinalAttachmentRel(models.Model):
-    _name = 'project.final.attachment.rel'
-    project_project_id = fields.Many2one('project.project')
-    ir_attachment_id = fields.Many2one('ir.attachment')
+#
+# class ProjectTargetAttachmentRel(models.Model):
+#     _name = 'project.target.attachment.rel'
+#
+#     project_idd = fields.Many2one('project.project')
+#     attachment_id = fields.Many2one('ir.attachment')
+#
+#
+# class ProjectSourceAttachmentRel(models.Model):
+#     _name = 'project.source.attachment.rel'
+#     project_idd = fields.Many2one('project.project')
+#     attachment_id = fields.Many2one('ir.attachment')
+#
+#
+# class ProjectQualityAttachmentRel(models.Model):
+#     _name = 'project.quality.attachment.rel'
+#     project_idd = fields.Many2one('project.project')
+#     attachment_id = fields.Many2one('ir.attachment')
+#
+#
+# class ProjectFinalAttachmentRel(models.Model):
+#     _name = 'project.final.attachment.rel'
+#     project_idd = fields.Many2one('project.project')
+#     attachment_id = fields.Many2one('ir.attachment')
 
 
-class TaskSourceAttachmentRel(models.Model):
-    _name = 'task.source.attachment.rel'
-    project_task_id = fields.Many2one('project.task')
-    ir_attachment_id = fields.Many2one('ir.attachment')
-
-
-class TaskTargetAttachmentRel(models.Model):
-    _name = 'task.target.attachment.rel'
-    project_task_id = fields.Many2one('project.task')
-    ir_attachment_id = fields.Many2one('ir.attachment')
+# class TaskSourceAttachmentRel(models.Model):
+#     _name = 'task.source.attachment.rel'
+#     project_task_id = fields.Many2one('project.task')
+#     ir_attachment_id = fields.Many2one('ir.attachment')
+#
+#
+# class TaskTargetAttachmentRel(models.Model):
+#     _name = 'task.target.attachment.rel'
+#     project_task_id = fields.Many2one('project.task')
+#     ir_attachment_id = fields.Many2one('ir.attachment')
