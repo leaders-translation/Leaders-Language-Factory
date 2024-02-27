@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_interpreter_line,interpreter.line,model_interpreter_line,sales_team.group_sale_salesman,1,1,1,0
+access_change_request_reason,change.request.reason,model_change_request_reason,project.group_project_user,1,1,1,1

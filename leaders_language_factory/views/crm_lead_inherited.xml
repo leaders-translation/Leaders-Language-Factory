@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="crm_lead_view_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_phone_update']" position="before">
+                    <field name="partner_company_type"/>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="after">
+                    <group>
+                        <label for="is_interpretation" class="oe_inline"/>
+                        <div class="o_row o_row_readonly">
+                            <field name="is_interpretation" readonly="quotation_count > 0"/>
+                        </div>
+                    </group>
+                </xpath>
+                <xpath expr="//h2[@class='row g-0 pb-3 pb-sm-4']" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </xpath>
+                <xpath expr="//label[@for='date_deadline']" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </xpath>
+                <xpath expr="//div[@class='o_lead_opportunity_form_inline_fields']" position="replace">
+                    <field name="date_deadline" invisible="1"/>
+                    <field name="priority" widget="priority"/>
+                    <field name="detailed_timeline"/>
+                </xpath>
+                <xpath expr="//page[@name='lead']" position="before">
+                    <page name="interpretation" string="Interpretation Information"
+                          invisible="is_interpretation!=True">
+                        <group>
+                            <group string="Details">
+                                <field name="interpretation_type"/>
+                                <field
+                                        name="interpreter_lines"
+                                        widget="section_and_note_one2many"
+                                        mode="tree">
+                                    <tree
+                                            string="Interpreters"
+                                            editable="bottom"
+                                            limit="20"
+                                    >
+                                        <field name="interpreter_name"/>
+                                        <field name="rate"/>
+                                         
+                                    </tree>
+                                </field>
+                                 <field name="interpreter_counts"/>
+                            </group>
+                            <group string="Event Details">
+                                <field name="event_name"/>
+                                <field name="event_location"/>
+                                <field name="event_date"/>
+                                <field name="days_number"/>
+                                <field name="event_duration"/>
+                                <field name="attendees_number"/>
+                                <field name="discussed_topics"/>
+                                <field name="hotel_ballroom_number"/>
+                            </group>
+                            <group string="Requirements">
+                                <field name="is_broadcasting_needed"/>
+                                <field name="technicians_number"/>
+                                <!--                                <field name="booths_number"/>-->
+                                <!--                                <field name="headsets_number"/>-->
+                                <!--                                <field name="additional_devices"/>-->
+                            </group>
+                        </group>
+
+
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="quick_create_opportunity_form_inherit" model="ir.ui.view">
+            <field name="name">crm.lead.form.quick_create_inherit</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='expected_revenue']" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='priority']" position="before">
+                   <label for="priority"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+           <record id="view_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='validity_date']" position="before">
+
+                      <field name="quotation_type"/>
+                      <field name="opportunity_id" readonly="True"/>
+                       <field name="is_interpretation" readonly="True"/>
+                       <field name="branch" />
+
+                  </xpath>
+                 <xpath expr="//field[@name='product_template_id']" position="after">
+                        <field name="source_language"/>
+                       <field name="target_language"/>
+                      <field name="order_id" column_invisible="1"/>
+                       <field name="estimated_number_of_pages" column_invisible="parent.is_interpretation==True" />
+                     <field name="estimated_number_of_words" column_invisible="parent.is_interpretation==True" />
+                </xpath>
+                   <xpath expr="//page[@name='order_lines']//tree//field[@name='product_template_id']" position="attributes">
+                        <attribute name='string'>Service</attribute>
+                </xpath>
+                  <xpath expr="//page[@name='order_lines']//tree//field[@name='price_unit']" position="attributes">
+                        <attribute name='string'>Rate</attribute>
+                </xpath>
+                 <xpath expr="//page[@name='order_lines']//tree//field[@name='name']" position="attributes">
+                        <attribute name='column_invisible'>True</attribute>
+                </xpath>
+                  <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="attributes">
+                        <attribute name='column_invisible'>parent.is_interpretation==False</attribute>
+                </xpath>
+                 <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="before">
+                       <field name="description" column_invisible="parent.is_interpretation==False"/>
+                </xpath>
+                 <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="after">
+                       <field name="period_in_days" column_invisible="parent.is_interpretation==False"/>
+                </xpath>
+                    <xpath expr="//field[@name='incoterm']" position="before">
+
+                      <field name="delivery_type"/>
+                        <field name="used_papers" invisible="delivery_type!='1'"/>
+
+
+                  </xpath>
+            </field>
+           </record>
+
+    </data>
+</odoo>
