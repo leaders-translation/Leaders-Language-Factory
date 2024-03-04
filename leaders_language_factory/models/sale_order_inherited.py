@@ -1,17 +1,26 @@
 from odoo import models, fields, api
 
 
-class SaleOrder(models.Model):
+class SaleOrderInherited(models.Model):
     _inherit = 'sale.order'
-    quotation_type = fields.Selection([('0', 'General'), ('1', 'Project')],
-                                      string="Quotation Type", default='1', required='1')
+
     is_interpretation = fields.Boolean(string='Is Interpretation', related='opportunity_id.is_interpretation',
                                        readonly=True)
-    branch = fields.Selection([('0', 'UAE'), ('1', 'Jordan')],
-                              string="Branch")
     delivery_type = fields.Selection([('0', 'Soft Copy'), ('1', 'Printed or E-copy')],
                                      string="Delivery Type")
     used_papers = fields.Integer(string="Used Papers")
+
+    source_attachment_ids = fields.Many2many('ir.attachment', related='opportunity_id.source_attachment_ids',
+                                             string='Source Files', readonly='1')
+
+    target_attachment_ids = fields.Many2many('ir.attachment', relation='sale_target_attachment_rel',
+                                             string='Target Files',  readonly='1')
+
+    def write(self, vals):
+        rec = super(SaleOrderInherited, self).write(vals)
+        if 'state' in vals and vals['state'] == 'sale':
+            self.opportunity_id.stage_id = self.env['crm.stage'].search([('is_won', '=', True)]).id
+        return rec
 
 
 class SaleOrderLine(models.Model):

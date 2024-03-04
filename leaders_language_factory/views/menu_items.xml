@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale.product_menu_catalog" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('base.group_system')])]"/>
+        </record>
+         <record id="project.menu_projects_group_stage" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('project.group_project_manager')])]"/>
+        </record>
+          <record id="project.menu_project_management_all_tasks" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('project.group_project_manager')])]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -10,6 +10,9 @@ AVAILABLE_TIMELINE = [
 class CrmLeadInherited(models.Model):
     _inherit = 'crm.lead'
 
+    source_attachment_ids = fields.Many2many('ir.attachment', 'lead_source_attachment_rel',
+                                             column1='lead_id', column2='attachment_id', string='Source Files')
+
     is_interpretation = fields.Boolean(string='Is Interpretation')
     # common fields
     detailed_timeline = fields.Text(string='Detailed Timeline')
@@ -35,12 +38,11 @@ class CrmLeadInherited(models.Model):
     hotel_ballroom_number = fields.Integer(string='Hotel Ballroom Number')
     required_interpreters_number = fields.Integer(string='Required Interpreters Number')
     technicians_number = fields.Integer(string='Technicians Number')
-    # booths_number = fields.Integer(string='Booths Number')
-    # headsets_number = fields.Integer(string='Headsets Number')
+
     interpreter_lines = fields.One2many('interpreter.line', 'lead_id', string='Interpreters')
     interpreter_counts = fields.Integer(readonly='1', compute='_compute_interpreter_count')
 
-    # additional_devices = fields.Char(string='Additional devices')
+    additional_devices = fields.Char(string='Additional devices')
 
     @api.depends('partner_id.company_type')
     def _compute_partner_company_type(self):
