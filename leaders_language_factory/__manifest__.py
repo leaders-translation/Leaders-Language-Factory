@@ -29,6 +29,7 @@ Long description of module's purpose
         'views/sale_order_inherited.xml',
         'wizard/change_request_reason.xml',
         'views/project_inherited.xml',
+        'views/menu_items.xml',
         'wizard/crm_lead_lost_inherited.xml'
     ],
     # only loaded in demonstration mode
