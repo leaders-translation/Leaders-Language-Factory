@@ -9,7 +9,7 @@
                     <field name="opportunity_id" readonly="True"/>
                     <field name="is_interpretation" readonly="True"/>
                     <field name="source_attachment_ids" widget="many2many_binary"/>
-                    <field name="target_attachment_ids" widget="many2many_binary"/>
+                    <field name="target_attachment_ids" widget="many2many_binary" invisible="is_interpretation"/>
 
 
                 </xpath>
@@ -50,9 +50,20 @@
                 <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="after">
                     <field name="period_in_days" column_invisible="parent.is_interpretation==False"/>
                 </xpath>
+                <xpath expr="//button[@name='action_cancel']" position="attributes">
+                    <attribute name='invisible'>"1"</attribute>
+                </xpath>
+                <xpath expr="//button[@id='send_by_email']" position="replace">
+                    <button name="action_quotation_download" id="download" string="Download as PDF" type="object"/>
 
+                    <button name="%(log_sales_project_note_action)d" string="Log note to project manager" type="action"
+                            class="btn-primary"
+                            title="Log note to project manager"
+                            invisible="(state != 'sale') or (is_interpretation==True)"/>
+                </xpath>
             </field>
         </record>
+
 
     </data>
 </odoo>
