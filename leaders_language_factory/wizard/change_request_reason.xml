@@ -4,12 +4,12 @@
             <field name="name">change.request.reason.form</field>
             <field name="model">change.request.reason</field>
             <field name="arch" type="xml">
-                <form string="Change Request Reason">
+                <form string="Discuss Needed">
                     <group>
-                        <field name="change_request_reason" options="{'no_create_edit': False}"  string="Refuse Reason"/>
+                        <field name="change_request_reason" options="{'no_create_edit': False}"  string="Discuss Reason"/>
                     </group>
                     <footer>
-                        <button name="action_refuse_task" string="Mark as Change Requested" type="object" class="btn-primary" data-hotkey="q"/>
+                        <button name="action_refuse_task" string="Submit" type="object" class="btn-primary" data-hotkey="q"/>
                         <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                     </footer>
                 </form>
@@ -17,7 +17,7 @@
         </record>
 
         <record id="change_request_action" model="ir.actions.act_window">
-            <field name="name">Refuse</field>
+            <field name="name">Discuss Needed</field>
             <field name="res_model">change.request.reason</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="task_change_request_view_form"/>

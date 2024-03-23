@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','project','crm','sale', 'sale_crm','account', 'hr'],
+    'depends': ['base', 'project', 'crm', 'sale', 'sale_crm', 'account', 'hr'],
 
     # always loaded
     'data': [
@@ -26,17 +26,21 @@ Long description of module's purpose
         'security/leaders_security.xml',
         'views/account_move_inherited.xml',
         'views/crm_lead_inherited.xml',
+        'wizard/sales_project_notes.xml',
         'views/sale_order_inherited.xml',
         'wizard/change_request_reason.xml',
         'views/project_inherited.xml',
         'views/menu_items.xml',
-        'wizard/crm_lead_lost_inherited.xml'
+        'wizard/crm_lead_lost_inherited.xml',
+
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    'assets': {
+        'web.assets_backend': ['leaders_language_factory/static/src/js/leaders.js']
+        , },
     'installable': True,
     'application': True,
 }
-

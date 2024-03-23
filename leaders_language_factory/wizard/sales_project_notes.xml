@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<odoo>
+        <record id="sales_project_notes_view_form" model="ir.ui.view">
+            <field name="name">sales.project.notes.form</field>
+            <field name="model">sales.project.notes</field>
+            <field name="arch" type="xml">
+                <form string="Log Note">
+                    <group>
+                        <field name="note" options="{'no_create_edit': False}"  string="Note"/>
+                           <field name="attachment_ids"   string="Attachments" widget="many2many_binary"/>
+                    </group>
+                    <footer>
+                        <button name="action_send_note" string="Send" type="object" class="btn-primary" data-hotkey="q"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="log_sales_project_note_action" model="ir.actions.act_window">
+            <field name="name">Log Note</field>
+            <field name="res_model">sales.project.notes</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sales_project_notes_view_form"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="context">{
+                'dialog_size' : 'medium',
+
+            }</field>
+        </record>
+</odoo>
