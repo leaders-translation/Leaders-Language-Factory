@@ -7,13 +7,13 @@
             <field name="inherit_id" ref="crm.crm_lead_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='%(crm.crm_lead_lost_action)d']" position="attributes">
-                    <attribute name='invisible'>stage_id==lost_stage</attribute>
+                    <attribute name='invisible'>is_lost_stage</attribute>
                 </xpath>
                 <xpath expr="//field[@name='partner_phone_update']" position="before">
                     <field name="partner_company_type"/>
                 </xpath>
                 <xpath expr="//field[@name='type']" position="after">
-                    <field name="lost_stage" invisible="1"/>
+                    <field name="is_lost_stage" invisible="1"/>
                     <group>
                         <label for="is_interpretation" class="oe_inline"/>
                         <div class="o_row o_row_readonly">
@@ -30,7 +30,7 @@
                     <attribute name='invisible'>1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='lost_reason_id']" position="attributes">
-                    <attribute name='invisible'>stage_id!=lost_stage</attribute>
+                    <attribute name='invisible'>is_lost_stage==False</attribute>
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="attributes">
                     <attribute name='invisible'>1</attribute>
@@ -87,7 +87,7 @@
                 </xpath>
                 <xpath expr="//sheet//widget[1]" position="replace">
                     <widget name="web_ribbon" title="Lost" bg_color="text-bg-danger"
-                            invisible="stage_id!=lost_stage"/>
+                            invisible="is_lost_stage== False"/>
 
                 </xpath>
             </field>
