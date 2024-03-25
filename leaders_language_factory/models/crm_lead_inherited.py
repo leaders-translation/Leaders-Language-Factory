@@ -6,10 +6,12 @@ AVAILABLE_TIMELINE = [
     ('3', 'Top Urgent'),
 ]
 
+
 class CrmStageInherited(models.Model):
     _inherit = 'crm.stage'
     is_lost = fields.Boolean(default=False, string='Is Lost Stage')
     is_negotiation = fields.Boolean(default=False, string='Is Negotiation Stage')
+
 
 class CrmLeadInherited(models.Model):
     _inherit = 'crm.lead'
@@ -48,8 +50,17 @@ class CrmLeadInherited(models.Model):
     interpreter_counts = fields.Integer(readonly='1', compute='_compute_interpreter_count')
 
     additional_devices = fields.Char(string='Additional devices')
-    lost_stage = fields.Many2one('crm.stage',
-                                 default=lambda self: self.env['crm.stage'].search([('is_lost', '=', 'true')], limit=1))
+    is_lost_stage = fields.Boolean(compute="_compute_is_lost_stage")
+
+    @api.depends('stage_id')
+    def _compute_is_lost_stage(self):
+        for lead in self:
+            lost_stage = self._stage_find(domain=[('is_lost', '=', True)], limit=None)
+            print(lost_stage)
+            if lead.stage_id == lost_stage:
+                lead.is_lost_stage = True
+            else:
+                lead.is_lost_stage = False
 
     @api.depends('partner_id.company_type')
     def _compute_partner_company_type(self):
@@ -69,7 +80,7 @@ class CrmLeadInherited(models.Model):
             lost_stage = self._stage_find(domain=[('is_lost', '=', True)], limit=None)
 
             if lost_stage:
-                lead.write({'stage_id': lost_stage.id,'active': True})
+                lead.write({'stage_id': lost_stage.id, 'active': True})
 
         return res
 
@@ -80,5 +91,3 @@ class InterpreterLine(models.Model):
     interpreter_name = fields.Many2one('hr.employee', string="Interpreter", required='1')
     rate = fields.Float(string="Rate")
     lead_id = fields.Many2one('crm.lead')
-
-
