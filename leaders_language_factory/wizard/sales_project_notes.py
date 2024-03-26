@@ -42,30 +42,33 @@ class SalesProjectNotes(models.TransientModel):
         self.ensure_one()
         if not is_html_empty(self.note):
             if self._context['active_model'] == 'sale.order':
+                print(self.sale_order_id.sudo().project_ids)
                 for project_id in self.sale_order_id.sudo().project_ids:
                     project_id.sudo().message_post(body=self.note,
                                                    author_id=self.sender_id.partner_id.id,
-                                                   subject='Sales Notes',
+                                                   subject='Project / Sales Notes',
                                                    message_type='comment',
                                                    subtype_xmlid='mail.mt_comment',
                                                    attachment_ids=self.attachment_ids.ids)
                     self.sale_order_id.sudo().message_post(body=self.note,
+                                                           subject='Project / Sales Notes',
                                                            author_id=self.sender_id.partner_id.id,
-                                                          message_type='comment',
+                                                           message_type='comment',
                                                            subtype_xmlid='mail.mt_comment',
                                                            attachment_ids=self.attachment_ids.ids)
 
             elif self._context['active_model'] == 'project.project':
-                print(self.project_id.sudo().sale_line_id.order_id )
+                print(self.project_id.sudo().sale_line_id.order_id)
                 self.project_id.sudo().sale_line_id.order_id.sudo().message_post(body=self.note,
-                                                                         author_id=self.sender_id.partner_id.id,
-                                                                         subject='Project Manager Notes',
-                                                                         message_type='comment',
-                                                                         subtype_xmlid='mail.mt_comment',
-                                                                         attachment_ids=self.attachment_ids.ids)
+                                                                                 author_id=self.sender_id.partner_id.id,
+                                                                                 subject='Project / Sales Notes',
+                                                                                 message_type='comment',
+                                                                                 subtype_xmlid='mail.mt_comment',
+                                                                                 attachment_ids=self.attachment_ids.ids)
 
-            self.project_id.sudo().message_post(body=self.note,
-                                                   author_id=self.sender_id.partner_id.id,
-                                                   message_type='comment',
-                                                   subtype_xmlid='mail.mt_comment',
-                                                   attachment_ids=self.attachment_ids.ids)
+                self.project_id.sudo().message_post(body=self.note,
+                                                    author_id=self.sender_id.partner_id.id,
+                                                    subject='Project / Sales Notes',
+                                                    message_type='comment',
+                                                    subtype_xmlid='mail.mt_comment',
+                                                    attachment_ids=self.attachment_ids.ids)

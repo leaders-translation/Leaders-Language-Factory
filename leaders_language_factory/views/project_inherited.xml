@@ -152,18 +152,32 @@
             <field name="arch" type="xml">
                 <field name="fold" position="before">
                     <field name="case_default"/>
+                    <field name="is_running_task"/>
+                    <field name="is_completed_task"/>
                 </field>
             </field>
         </record>
         <record id="project.action_view_my_task" model="ir.actions.act_window">
             <field name="context">{'search_default_open_tasks': 0}</field>
         </record>
-           <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
+        <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
             <field name="context">{
                 'default_project_id': active_id,
                 'show_project_update': True,
                 'search_default_open_tasks': 0,
-            }</field>
+                }
+            </field>
+        </record>
+          <record id="project.action_view_my_task" model="ir.actions.act_window">
+            <field name="context">{'search_default_open_tasks': 0}</field>
+        </record>
+        <record id="project.action_view_my_task" model="ir.actions.act_window">
+            <field name="context">{
+                'search_default_open_tasks': 0,
+                'all_task': 0,
+                'default_user_ids': [(4, uid)],
+                }
+            </field>
         </record>
     </data>
 </odoo>

@@ -1,3 +1,5 @@
+from odoo import _
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from odoo.tools import is_html_empty
@@ -160,6 +162,14 @@ class ProjectTaskInherited(models.Model):
         record.source_attachment_ids = get_duplicated_attachment(record, project_source_attachment)
         return record
 
+    @api.model
+    def _get_default_personal_stage_create_vals(self, user_id):
+        return [
+            {'sequence': 1, 'name': _('Running'), 'user_id': user_id, 'fold': False},
+            {'sequence': 2, 'name': _('Completed'), 'user_id': user_id, 'fold': False},
+
+        ]
+
     @api.onchange('user_ids')
     def onchange_user_ids(self):
         self.change_request_reason = ' <br> '
@@ -185,8 +195,17 @@ class ProjectTaskInherited(models.Model):
         else:
             if 'state' in vals and vals['state'] == '1_done':
                 # switch stage to completed
-                completed_stage = self.env['project.task.type'].sudo().search([('name', '=', 'Completed')])
+                completed_stage = self.env['project.task.type'].sudo().search([('is_completed_task', '=', True)])
                 vals['stage_id'] = completed_stage.id
+                if (self.user_ids):
+                    for user in self.user_ids:
+                        completed_user_stage = self.env['project.task.type'].sudo().search(
+                            [('user_id', '=', user.id), ('sequence', '=', '2')], limit=1)
+                        print(completed_user_stage, self.personal_stage_type_id, self.personal_stage_id,
+                              self.personal_stage_type_ids)
+                        if completed_user_stage:
+
+                            vals['personal_stage_type_id'] = completed_user_stage.id
             rec = super(ProjectTaskInherited, self).write(vals)
             if 'state' in vals:
 
@@ -265,3 +284,5 @@ class ProjectTaskType(models.Model):
              "on each new project. It will not assign this stage to existing "
              "projects.",
     )
+    is_running_task = fields.Boolean()
+    is_completed_task = fields.Boolean()
