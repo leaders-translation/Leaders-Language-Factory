@@ -1,9 +1,8 @@
-from odoo import _
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from odoo.tools import is_html_empty
 import logging
+from odoo import _
 
 _logger = logging.getLogger(__name__)
 
@@ -24,8 +23,7 @@ class ProjectProjectInherited(models.Model):
         default='followers')
 
     is_project_manager = fields.Boolean(compute='_check_is_project_manager')
-    order_delivery_date = fields.Datetime(
-        string="Sale Order Delivery Date", readonly='1')
+
     source_attachment_ids = fields.Many2many('ir.attachment', 'project_source_attachment_rel',
                                              column1='project_id', column2='attachment_id', string='Source Files',
                                              readonly='1')
@@ -68,7 +66,7 @@ class ProjectProjectInherited(models.Model):
     def create(self, vals):
         record = super(ProjectProjectInherited, self).create(vals)
         if record.sale_line_id.order_id:
-            record.order_delivery_date = record.sale_line_id.order_id.commitment_date
+            record.sale_line_id.order_id.related_project = record.id
             sale_order_source_attachments = record.sale_line_id.order_id.source_attachment_ids
             record.source_attachment_ids = get_duplicated_attachment(record, sale_order_source_attachments)
             if record.sale_line_id.order_id.order_line:
@@ -194,17 +192,14 @@ class ProjectTaskInherited(models.Model):
 
         else:
             if 'state' in vals and vals['state'] == '1_done':
-                # switch stage to completed
-                completed_stage = self.env['project.task.type'].sudo().search([('is_completed_task', '=', True)])
+                completed_stage = self.env['project.task.type'].sudo().search([('name', '=', 'Completed')])
                 vals['stage_id'] = completed_stage.id
-                if (self.user_ids):
+                if self.user_ids:
                     for user in self.user_ids:
                         completed_user_stage = self.env['project.task.type'].sudo().search(
                             [('user_id', '=', user.id), ('sequence', '=', '2')], limit=1)
-                        print(completed_user_stage, self.personal_stage_type_id, self.personal_stage_id,
-                              self.personal_stage_type_ids)
-                        if completed_user_stage:
 
+                        if completed_user_stage:
                             vals['personal_stage_type_id'] = completed_user_stage.id
             rec = super(ProjectTaskInherited, self).write(vals)
             if 'state' in vals:
@@ -256,6 +251,17 @@ class ProjectTaskInherited(models.Model):
             self.translator_target_attachment_ids = translation_task.target_attachment_ids
 
 
+class ProjectTaskType(models.Model):
+    _inherit = "project.task.type"
+
+    case_default = fields.Boolean(
+        string="Default for New Projects",
+        help="If you check this field, this stage will be proposed by default "
+             "on each new project. It will not assign this stage to existing "
+             "projects.",
+    )
+
+
 def get_duplicated_attachment(self, attachments):
     created_attachment_ids = []
 
@@ -273,16 +279,3 @@ def get_duplicated_attachment(self, attachments):
 
     # Access the IDs of the created attachments using the created_attachment_ids list
     return created_attachment_ids
-
-
-class ProjectTaskType(models.Model):
-    _inherit = "project.task.type"
-
-    case_default = fields.Boolean(
-        string="Default for New Projects",
-        help="If you check this field, this stage will be proposed by default "
-             "on each new project. It will not assign this stage to existing "
-             "projects.",
-    )
-    is_running_task = fields.Boolean()
-    is_completed_task = fields.Boolean()

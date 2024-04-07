@@ -24,7 +24,6 @@
                 </xpath>
                 <xpath expr="//field[@name='date_start']" position="after">
                     <field name="is_project_manager" invisible="1"/>
-                    <field name="order_delivery_date"/>
                     <field name="translator_target_attachment_ids" widget="many2many_binary"/>
                     <field name="proofreader_target_attachment_ids" widget="many2many_binary"/>
 
@@ -34,6 +33,7 @@
                     <attribute name="invisible">is_project_manager==False</attribute>
 
                 </xpath>
+
 
             </field>
         </record>
@@ -94,8 +94,26 @@
                 <kanban position="attributes">
                     <attribute name="action"></attribute>
                 </kanban>
+                <xpath expr="//t//div/div//div//div//div//div" position="replace">
+                    <div t-if="record.detailed_timeline" class="text-muted o_row">
+                        <span class="fa fa-clock-o me-2" title="Dates"></span>
+                        <field name="detailed_timeline"/>
+
+                    </div>
+
+                </xpath>
+                <xpath expr="//t//div//field[@name='tag_ids']" position="replace">
+                    <div>
+                        <field name="source_language"/>
+                        <i class="fa fa-long-arrow-right mx-2 oe_read_only" aria-label="Arrow icon" title="Arrow"/>
+                        <field name="target_language"/>
+                    </div>
+                </xpath>
+
+
             </field>
         </record>
+
         <record id="quick_create_task_form_inherit" model="ir.ui.view">
             <field name="name">project.task.form.quick_create.inherit</field>
             <field name="model">project.task</field>
@@ -106,21 +124,7 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='user_ids']" position="after">
-                    <field name="task_type" widget="tags"/>
-                </xpath>
-            </field>
-        </record>
-        <record id="quick_create_task_form_inherit" model="ir.ui.view">
-            <field name="name">project.task.form.quick_create.inherit</field>
-            <field name="model">project.task</field>
-            <field name="inherit_id" ref="project.quick_create_task_form"/>
-            <field name="arch" type="xml">
-
-                <xpath expr="//field[@name='user_ids']" position="attributes">
-                    <attribute name="invisible">1</attribute>
-                </xpath>
-                <xpath expr="//field[@name='user_ids']" position="after">
-                    <field name="task_type" widget="tags"/>
+                    <field name="task_type" />
                 </xpath>
             </field>
         </record>
@@ -152,32 +156,16 @@
             <field name="arch" type="xml">
                 <field name="fold" position="before">
                     <field name="case_default"/>
-                    <field name="is_running_task"/>
-                    <field name="is_completed_task"/>
                 </field>
             </field>
         </record>
-        <record id="project.action_view_my_task" model="ir.actions.act_window">
-            <field name="context">{'search_default_open_tasks': 0}</field>
-        </record>
+
         <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
-            <field name="context">{
-                'default_project_id': active_id,
-                'show_project_update': True,
-                'search_default_open_tasks': 0,
-                }
-            </field>
+            <field name="context">{'default_project_id': active_id,'show_project_update': True,'search_default_open_tasks': 0}</field>
         </record>
-          <record id="project.action_view_my_task" model="ir.actions.act_window">
-            <field name="context">{'search_default_open_tasks': 0}</field>
-        </record>
+
         <record id="project.action_view_my_task" model="ir.actions.act_window">
-            <field name="context">{
-                'search_default_open_tasks': 0,
-                'all_task': 0,
-                'default_user_ids': [(4, uid)],
-                }
-            </field>
+            <field name="context">{'search_default_open_tasks': 0,'all_task': 0,'default_user_ids': [(4, uid)]}</field>
         </record>
     </data>
 </odoo>

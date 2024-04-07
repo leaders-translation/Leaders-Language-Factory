@@ -16,19 +16,33 @@ class SaleOrderInherited(models.Model):
     target_attachment_ids = fields.Many2many('ir.attachment', relation='sale_target_attachment_rel',
                                              string='Target Files', readonly='1')
     project_ids = fields.Many2many('project.project', compute_sudo=True)
+    commitment_date = fields.Datetime(related='opportunity_id.detailed_timeline', readonly='1',
+                                      string="Detailed Timeline")
+    related_project = fields.Many2one('project.project')
+    project_status = fields.Text(compute='_get_project_stage')
+
+    def _get_project_stage(self):
+        for rec in self:
+            print('hellp')
+            rec.project_status = ''
+            if rec.related_project:
+                rec.project_status = rec.related_project.stage_id.name
 
     def write(self, vals):
         rec = super(SaleOrderInherited, self).write(vals)
         if 'state' in vals and vals['state'] == 'sale':
             self.opportunity_id.stage_id = self.env['crm.stage'].search([('is_won', '=', True)]).id
+
         return rec
 
     def create(self, vals):
         rec = super(SaleOrderInherited, self).create(vals)
-        nego_stage = self.env['crm.stage'].search([('is_negotiation', '=', True)])
-        print(nego_stage)
-        if nego_stage:
-            rec.opportunity_id.stage_id = nego_stage.id
+        if (rec.opportunity_id):
+
+            nego_stage = self.env['crm.stage'].search([('is_negotiation', '=', True)])
+
+            if nego_stage:
+                rec.opportunity_id.stage_id = nego_stage.id
         return rec
 
     def action_quotation_download(self):
