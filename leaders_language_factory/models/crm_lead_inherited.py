@@ -21,7 +21,7 @@ class CrmLeadInherited(models.Model):
 
     is_interpretation = fields.Boolean(string='Is Interpretation')
     # common fields
-    detailed_timeline = fields.Text(string='Detailed Timeline')
+    detailed_timeline = fields.Datetime(string='Detailed Timeline')
 
     timeline = fields.Selection(AVAILABLE_TIMELINE
                                 , string='Timeline', index=True,
