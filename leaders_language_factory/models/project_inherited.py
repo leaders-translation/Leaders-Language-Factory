@@ -66,7 +66,7 @@ class ProjectProjectInherited(models.Model):
     def create(self, vals):
         record = super(ProjectProjectInherited, self).create(vals)
         if record.sale_line_id.order_id:
-            record.sale_line_id.order_id.related_project = record.id
+            record.sale_line_id.order_id.sudo().related_project = record.id
             sale_order_source_attachments = record.sale_line_id.order_id.source_attachment_ids
             record.source_attachment_ids = get_duplicated_attachment(record, sale_order_source_attachments)
             if record.sale_line_id.order_id.order_line:
