@@ -192,7 +192,7 @@ class ProjectTaskInherited(models.Model):
 
         else:
             if 'state' in vals and vals['state'] == '1_done':
-                completed_stage = self.env['project.task.type'].sudo().search([('name', '=', 'Completed')])
+                completed_stage = self.env['project.task.type'].sudo().search([('name', '=', 'Completed')], limit=1)
                 vals['stage_id'] = completed_stage.id
                 if self.user_ids:
                     for user in self.user_ids:
