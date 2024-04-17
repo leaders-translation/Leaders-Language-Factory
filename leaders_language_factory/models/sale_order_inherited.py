@@ -23,10 +23,9 @@ class SaleOrderInherited(models.Model):
 
     def _get_project_stage(self):
         for rec in self:
-            print('hellp')
-            rec.project_status = ''
-            if rec.related_project:
-                rec.project_status = rec.related_project.stage_id.name
+            rec.project_status = ""
+            if rec.sudo().related_project:
+                rec.project_status = rec.sudo().related_project.stage_id.name
 
     def write(self, vals):
         rec = super(SaleOrderInherited, self).write(vals)
