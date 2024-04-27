@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project', 'crm', 'sale', 'sale_crm', 'account', 'hr'],
+    'depends': ['base', 'project', 'crm', 'sale', 'sale_crm', 'account', 'hr', 'sale_project'],
 
     # always loaded
     'data': [
@@ -30,8 +30,10 @@ Long description of module's purpose
         'views/sale_order_inherited.xml',
         'wizard/change_request_reason.xml',
         'views/project_inherited.xml',
+        'views/project_task_inherited.xml',
         'views/menu_items.xml',
         'wizard/crm_lead_lost_inherited.xml',
+        'wizard/crm_lead_to_opportunity_views_inherited.xml',
 
     ],
     # only loaded in demonstration mode
