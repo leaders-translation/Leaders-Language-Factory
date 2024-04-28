@@ -8,15 +8,11 @@
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="opportunity_id" readonly="True"/>
                     <field name="is_interpretation" readonly="True"/>
-                    <field name="source_attachment_ids" widget="many2many_binary"/>
-                    <field name="target_attachment_ids" widget="many2many_binary" invisible="is_interpretation"/>
-
-
                 </xpath>
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <field name="commitment_date" readonly="1"/>
-                    <field name="delivery_type"/>
-                    <field name="used_papers" invisible="delivery_type=='0'"/>
+                    <field name="delivery_type" invisible="is_interpretation"/>
+                    <field name="used_papers" invisible="delivery_type=='0' or is_interpretation"/>
                 </xpath>
                 <xpath expr="//field[@name='validity_date']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -28,6 +24,10 @@
                     <field name="source_language"/>
                     <field name="target_language"/>
                     <field name="order_id" column_invisible="1"/>
+                      <field name="source_attachment_ids" widget="many2many_binary"/>
+                     <field name="target_attachment_ids" widget="many2many_binary" column_invisible="(parent.is_interpretation) or (parent.state != 'sale')"/>
+                        <field name="service_status" column_invisible="(parent.is_interpretation) or (parent.state != 'sale')"/>
+
                     <field name="estimated_number_of_pages" column_invisible="parent.is_interpretation==True"/>
                     <field name="estimated_number_of_words" column_invisible="parent.is_interpretation==True"/>
                 </xpath>
@@ -39,6 +39,12 @@
                     <attribute name='string'>Rate</attribute>
                 </xpath>
                 <xpath expr="//page[@name='order_lines']//tree//field[@name='name']" position="attributes">
+                    <attribute name='column_invisible'>True</attribute>
+                </xpath>
+                 <xpath expr="//page[@name='order_lines']//tree//field[@name='qty_delivered']" position="attributes">
+                    <attribute name='column_invisible'>True</attribute>
+                </xpath>
+                <xpath expr="//page[@name='order_lines']//tree//field[@name='qty_invoiced']" position="attributes">
                     <attribute name='column_invisible'>True</attribute>
                 </xpath>
                 <xpath expr="//page[@name='order_lines']//tree//field[@name='product_uom_qty']" position="attributes">

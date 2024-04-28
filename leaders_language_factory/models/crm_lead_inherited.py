@@ -16,9 +16,6 @@ class CrmStageInherited(models.Model):
 class CrmLeadInherited(models.Model):
     _inherit = 'crm.lead'
 
-    source_attachment_ids = fields.Many2many('ir.attachment', 'lead_source_attachment_rel',
-                                             column1='lead_id', column2='attachment_id', string='Source Files')
-
     is_interpretation = fields.Boolean(string='Is Interpretation')
     # common fields
     detailed_timeline = fields.Datetime(string='Detailed Timeline')
