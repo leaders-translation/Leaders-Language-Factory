@@ -20,6 +20,10 @@ class ProjectTaskInherited(models.Model):
                                 string='Assignees', context={'active_test': False}, tracking=True,
                                 readonly=True)
 
+    translator_id = fields.Many2one('res.users', string='Translator')
+    proofreader_id = fields.Many2one('res.users', string='Proofreader')
+    editor_ids = fields.Many2many('res.users', relation='project_task_editor_rel', column1='task_id',
+                                  column2='editor_id', string='Editors')
     source_attachment_ids = fields.Many2many('ir.attachment', relation='task_translator_source_attachment_rel',
                                              string='Source Files', readonly='1')
 
@@ -52,14 +56,8 @@ class ProjectTaskInherited(models.Model):
                                                          column1='task_id', column2='attachment_id',
                                                          string='Proofreader Target Files',
                                                          )
-    translator_mistakes = fields.Html('Translator Mistakes')
-    ##########################
-    # editing fields
-    edit_notes = fields.Html('Edit Notes')
-    edit_attachment_ids = fields.Many2many('ir.attachment',
-                                           relation='task_files_attachment_rel',
-                                           column1='task_id', column2='attachment_id',
-                                           string='Files that need editing')
+    translator_notes = fields.Html('Translator Notes')
+
     phase = fields.Selection([
         ('translation', 'translation'),
         ('proofreading', 'proofreading'),
@@ -97,7 +95,6 @@ class ProjectTaskInherited(models.Model):
             self.is_project_manager = False
 
     def write(self, vals):
-
         if ('state' in vals and vals['state'] == '02_changes_requested'
                 and 'change_request_reason' not in vals and (is_html_empty(self.change_request_reason))):
 
@@ -106,9 +103,25 @@ class ProjectTaskInherited(models.Model):
         else:
             if 'state' in vals and vals['state'] == '1_done':
                 self.change_task_stage(vals)
+            if 'proofreader_id' in vals and self.phase == 'translation':
+                proof_stage = self.env['project.task.type'].sudo().search(
+                    [('name', '=', 'Proofreading'), ('sequence', '=', '3')], limit=1)
+                vals['stage_id'] = proof_stage.id
 
             rec = super(ProjectTaskInherited, self).write(vals)
+
             self.check_project_stage(vals)
+
+            if 'translator_id' in vals or 'proofreader_id' in vals or 'editor_ids' in vals:
+                user_ids = []
+                if self.translator_id:
+                    user_ids.append(self.translator_id.id)
+                if self.proofreader_id:
+                    user_ids.append(self.proofreader_id.id)
+                if self.editor_ids:
+                    for editor in self.editor_ids:
+                        user_ids.append(editor.id)
+                self.sudo().write({'user_ids': [(6, 0, user_ids)]})
             return rec
 
     def add_target_files_to_sale_order_line(self):

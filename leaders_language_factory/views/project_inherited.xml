@@ -7,24 +7,16 @@
             <field name="inherit_id" ref="project.edit_project"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='stage_id']" position="after">
-
-                    <button name="%(log_sales_project_note_action)d" string="Log note to salesperson" type="action"
-                            class="btn-primary"
-                            title="Log note to salesperson"
-                    />
+                    <button name="%(log_sales_project_note_action)d" string="Log note to salesperson" type="action" class="btn-primary" title="Log note to salesperson"/>
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="detailed_timeline"/>
-
-
                 </xpath>
                 <xpath expr="//field[@name='date_start']" position="after">
                     <field name="is_project_manager" invisible="1"/>
-
                 </xpath>
                 <xpath expr="//field[@name='date_start']" position="attributes">
                     <attribute name="invisible">is_project_manager==False</attribute>
-
                 </xpath>
                 <xpath expr="//field[@name='label_tasks']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -33,34 +25,27 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                  <xpath expr="//page[@name='description']" position="before">
-                           <page string="tasks" name="Tasks">
-                        <field
-                            name="tasks"
-                            widget="section_and_note_one2many"
-                            mode="tree"
-
-                            >
-                             <tree create="false" no_open="1" edit="false" delete="false" >
-                                  <field name="state" widget="project_task_state_selection" nolabel="1" options="{'is_toggle_mode': false}" on_change="1" field_id="state_0"/>
-                                <field name="user_ids" widget="many2many_avatar_user"/>
-                                <field name="product_id"/>
-                                <field name="source_language"/>
-                                <field name="target_language"/>
+                     <page string="tasks" name="Tasks">
+                         <field name="tasks" widget="section_and_note_one2many" mode="tree">
+                             <tree create="false" no_open="1" delete="false"  editable="bottom">
+                                 <field name="state" widget="project_task_state_selection" nolabel="1" options="{'is_toggle_mode': false}" on_change="1" field_id="state_0"/>
+                                 <field name="user_ids" widget="many2many_avatar_user" readonly="false"/>
+                                 <field name="translator_id" widget="many2one_avatar_user"/>
+                                 <field name="date_deadline" widget="date"/>
                                  <field name="source_attachment_ids" widget="many2many_binary"/>
-                                             <field name="date_deadline"/>
-                                    <field name="stage_id" widget="badge" decoration-info="stage_id!=0"/>
-                                  <button  name="action_open_task" type="object" title="View Task" string="View Task" class="btn btn-link float-end"
-                                            context="{'form_view_ref': 'project.view_task_form2'}"
-                                            />
+                                 <field name="product_id"/>
+                                 <field name="project_id" column_invisible ="1"/>
+                                 <field name="company_id"  column_invisible ="1" />
+                                 <field name="source_language"/>
+                                 <field name="target_language"/>
+                                 <field name="stage_id" widget="badge" decoration-info="stage_id!=0"/>
+                                 <button  name="action_open_task" type="object" title="View Task" string="View Task" class="btn btn-link float-end" context="{'form_view_ref': 'project.view_task_form2'}"/>
                             </tree>
                         </field>
-
-
                     </page>
                 </xpath>
             </field>
         </record>
-
         <record id="view_project_kanban_inherit" model="ir.ui.view">
             <field name="name">project.project.kanban.inherit</field>
             <field name="model">project.project</field>
@@ -75,19 +60,15 @@
                         <field name="detailed_timeline"/>
                     </div>
                 </xpath>
-                  <xpath expr="//t//div//field[@name='tag_ids']" position="replace">
+                <xpath expr="//t//div//field[@name='tag_ids']" position="replace">
                     <div>
-<field name="target_source_pairs"/>
+                        <field name="target_source_pairs"/>
                     </div>
                 </xpath>
-
             </field>
         </record>
         <record id="project.act_project_project_2_project_task_all" model="ir.actions.act_window">
-            <field name="context">{'default_project_id': active_id,'show_project_update':
-                True,'search_default_open_tasks': 0}
-            </field>
+            <field name="context">{'default_project_id': active_id,'show_project_update':True,'search_default_open_tasks': 0} </field>
         </record>
-
     </data>
 </odoo>

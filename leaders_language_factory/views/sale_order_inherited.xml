@@ -26,7 +26,7 @@
                     <field name="order_id" column_invisible="1"/>
                       <field name="source_attachment_ids" widget="many2many_binary"/>
                      <field name="target_attachment_ids" widget="many2many_binary" column_invisible="(parent.is_interpretation) or (parent.state != 'sale')"/>
-                        <field name="service_status" column_invisible="(parent.is_interpretation) or (parent.state != 'sale')"/>
+                        <field name="service_status" widget="badge"  column_invisible="(parent.is_interpretation) or (parent.state != 'sale')"/>
 
                     <field name="estimated_number_of_pages" column_invisible="parent.is_interpretation==True"/>
                     <field name="estimated_number_of_words" column_invisible="parent.is_interpretation==True"/>
