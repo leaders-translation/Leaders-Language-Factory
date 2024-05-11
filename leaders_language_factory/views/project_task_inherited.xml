@@ -7,12 +7,8 @@
             <field name="inherit_id" ref="project.view_task_form2"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='state']" position="after">
-                    <button name="%(change_request_action)d" string="Discuss Needed" type="action" class="btn-primary"
-                            title="Discuss Needed"
-                            invisible="(state != '01_in_progress') or (is_project_manager == True)"/>
-
-                    <button name="add_target_files_to_sale_order_line" string="Add target files to sale order"
-                            style="width: 200px !important;" class="oe_highlight" type="object" invisible="is_project_manager != True"/>
+                    <button name="%(change_request_action)d" string="Discuss Needed" type="action" class="btn-primary" title="Discuss Needed" invisible="(state != '01_in_progress') or (is_project_manager == True)"/>
+                    <button name="add_target_files_to_sale_order_line" string="Add target files to sale order" style="width: 200px !important;" class="oe_highlight" type="object" invisible="is_project_manager != True"/>
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -20,81 +16,72 @@
                 <xpath expr="//field[@name='milestone_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                  <xpath expr="//field[@name='tag_ids']" position="attributes">
+                <xpath expr="//field[@name='tag_ids']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='user_ids']" position="attributes">
                     <attribute name="readonly">is_project_manager==False</attribute>
+                    <attribute name="invisible">1</attribute>
                 </xpath>
-
+                <xpath expr="//field[@name='user_ids']" position="after">
+                    <field name="translator_id" widget="many2one_avatar_user" readonly="is_project_manager==False"/>
+                    <field name="proofreader_id" widget="many2one_avatar_user" readonly="is_project_manager==False"/>
+                    <field name="editor_ids" widget="many2many_avatar_user" readonly="is_project_manager==False"/>
+                </xpath>
                 <xpath expr="//field[@name='date_deadline']" position="attributes">
                     <attribute name="readonly">is_project_manager==False</attribute>
                 </xpath>
-                 <xpath expr="//page[@name='sub_tasks_page']" position="attributes">
+                <xpath expr="//page[@name='sub_tasks_page']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-                  <xpath expr="//page[@name='extra_info']" position="attributes">
+                <xpath expr="//page[@name='extra_info']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="after">
-
                     <field name="source_attachment_ids" widget="many2many_binary"/>
                     <field name="source_language" widget="many2one" style="pointer-events:none;"/>
                     <field name="target_language" widget="many2one" style="pointer-events:none;"/>
                     <field name="product_id" widget="many2one"/>
                     <field name="translator_num_of_words"  readonly="phase!='translation'" />
-                    <field name="translator_target_attachment_ids" widget="many2many_binary"  readonly="phase!='translation'"
-                          />
-
-                    <field name="change_request_reason"
-                           invisible="(state not in ('02_changes_requested'))"/>
-                </xpath>
+                    <field name="translator_target_attachment_ids" widget="many2many_binary"  readonly="phase!='translation'"/>
+                    <field name="change_request_reason" invisible="(state not in ('02_changes_requested'))"/> </xpath>
                 <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="after">
-
                     <field name="is_project_manager" invisible="1"/>
-                      <field name="phase" invisible="1"/>
-                    <field name="translator_mistakes"  invisible="phase == 'translation'"/>
-                      <field name="proofreader_num_of_words" invisible="phase == 'translation'"/>
-                    <field name="proofreader_target_attachment_ids" widget="many2many_binary" invisible="phase == 'translation'"
-                          />
-
-
+                    <field name="phase" invisible="1"/>
+                    <field name="translator_notes"  invisible="phase == 'translation'"/>
+                    <field name="proofreader_num_of_words" invisible="phase == 'translation'"/>
+                    <field name="proofreader_target_attachment_ids" widget="many2many_binary" invisible="phase == 'translation'"/>
                 </xpath>
-
             </field>
         </record>
-  <record id="project_task_view_tree_main_base_inherit" model="ir.ui.view">
+        <record id="project_task_view_tree_main_base_inherit" model="ir.ui.view">
             <field name="name">project.task.view.tree.main.base.inherit</field>
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.project_task_view_tree_main_base"/>
             <field name="arch" type="xml">
-
                 <xpath expr="//field[@name='name']" position="attributes">
                     <attribute name="column_invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='tag_ids']" position="attributes">
                     <attribute name="column_invisible">1</attribute>
                 </xpath>
-
-                   <xpath expr="//field[@name='user_ids']" position="after">
-                <field name="product_id"/>
-                       <field name="source_language"/>
-                       <field name="target_language"/>
-                       <field name="source_attachment_ids" widget="many2many_binary"/>
-                       <field name="date_deadline"/>
-                   </xpath>
+                <xpath expr="//field[@name='user_ids']" position="after">
+                    <field name="product_id"/>
+                    <field name="source_language"/>
+                    <field name="target_language"/>
+                    <field name="source_attachment_ids" widget="many2many_binary"/>
+                    <field name="date_deadline"/>
+                </xpath>
             </field>
-  </record>
+        </record>
         <record id="quick_create_task_form_inherit" model="ir.ui.view">
             <field name="name">project.task.form.quick_create.inherit</field>
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.quick_create_task_form"/>
             <field name="arch" type="xml">
-
                 <xpath expr="//field[@name='user_ids']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-
             </field>
         </record>
 
@@ -105,8 +92,8 @@
             <field name="arch" type="xml">
                 <field name="fold" position="before">
                     <field name="case_default"/>
-                      <field name="is_translation"/>
-                      <field name="is_proofreading"/>
+                    <field name="is_translation"/>
+                    <field name="is_proofreading"/>
                     <field name="is_editing"/>
                 </field>
             </field>
@@ -118,13 +105,12 @@
             <field name="arch" type="xml">
                 <field name="fold" position="before">
                     <field name="case_default"/>
-                     <field name="is_translation"/>
-                      <field name="is_proofreading"/>
+                    <field name="is_translation"/>
+                    <field name="is_proofreading"/>
                     <field name="is_editing"/>
                 </field>
             </field>
         </record>
-
 
         <record id="project.action_view_my_task" model="ir.actions.act_window">
             <field name="context">{'search_default_open_tasks': 0,'all_task': 0,'default_user_ids': [(4, uid)]}</field>
