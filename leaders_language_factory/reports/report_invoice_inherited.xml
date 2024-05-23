@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="account_invoice_report_inherited" inherit_id="account.report_invoice_document">
+            <xpath expr="//div[@class='row']" position="before">
+                <h2 style=" width: 100%;
+   text-align: center;
+   border-bottom: 1px solid #000;
+   line-height: 0.1em;
+   margin: 10px 0 20px; "><span style="background:#fff;
+    padding:0 10px;
+}">TAX INVOICE - فاتورة ضريبية</span></h2>
+            </xpath>
+
+        </template>
+    </data>
+</odoo>

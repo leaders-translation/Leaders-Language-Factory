@@ -34,6 +34,7 @@ Long description of module's purpose
         'views/menu_items.xml',
         'wizard/crm_lead_lost_inherited.xml',
         'wizard/crm_lead_to_opportunity_views_inherited.xml',
+        'reports/report_invoice_inherited.xml'
 
     ],
     # only loaded in demonstration mode
