@@ -13,6 +13,9 @@ class SaleOrderInherited(models.Model):
     project_ids = fields.Many2many('project.project', compute_sudo=True)
     commitment_date = fields.Datetime(related='opportunity_id.detailed_timeline', readonly='1',
                                       string="Detailed Timeline")
+
+    contact_name = fields.Char(related='opportunity_id.contact_name',
+                               string="Contact Person")
     related_project = fields.Many2one('project.project')
     project_status = fields.Text(compute='_get_project_stage')
 
@@ -40,4 +43,21 @@ class SaleOrderInherited(models.Model):
         return rec
 
     def action_quotation_download(self):
+
         return self.env.ref('sale.action_report_saleorder').report_action(self)
+
+    def _compute_sale_order_template_id(self):
+        for order in self:
+            if order.is_interpretation:
+                order_template_id = self.env['sale.order.template'].search([('is_interpretation_template', "=", True)],
+                                                                           limit=1)
+                order.sale_order_template_id = order_template_id.id
+            elif order.partner_id.company_type == 'person':
+                order_template_id = self.env['sale.order.template'].search([('is_individual_template', "=", True)],
+                                                                           limit=1)
+                order.sale_order_template_id = order_template_id.id
+            elif order.partner_id.company_type == 'company':
+                order_template_id = self.env['sale.order.template'].search([('is_company_template', "=", True)],
+                                                                           limit=1)
+                order.sale_order_template_id = order_template_id.id
+

@@ -7,3 +7,6 @@ from . import sale_order_line_inherited
 from . import account_move_inherited
 from . import project_inherited
 from . import project_task_inherited
+from . import sale_order_template
+from . import res_company
+

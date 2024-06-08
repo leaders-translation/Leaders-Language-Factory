@@ -18,7 +18,7 @@ Long description of module's purpose
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'project', 'crm', 'sale', 'sale_crm', 'account', 'hr', 'sale_project'],
+    'depends': ['base','web', 'project', 'crm', 'sale', 'sale_crm', 'account', 'hr', 'sale_project'],
 
     # always loaded
     'data': [
@@ -32,17 +32,21 @@ Long description of module's purpose
         'views/project_inherited.xml',
         'views/project_task_inherited.xml',
         'views/menu_items.xml',
+        'views/sale_order_template_inherited.xml',
+        'views/res_company.xml',
         'wizard/crm_lead_lost_inherited.xml',
         'wizard/crm_lead_to_opportunity_views_inherited.xml',
+        'reports/report_invoice_inherited.xml',
+        'reports/report_sale_order_document_inherited.xml',
+
 
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
-    'assets': {
-        'web.assets_backend': ['leaders_language_factory/static/src/js/leaders.js']
-        , },
+
+
     'installable': True,
     'application': True,
 }

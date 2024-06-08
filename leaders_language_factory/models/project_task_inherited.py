@@ -71,12 +71,8 @@ class ProjectTaskInherited(models.Model):
             {'sequence': 3, 'name': _('Proofreading'), 'user_id': user_id, 'fold': False},
             {'sequence': 4, 'name': _('Proofreading Completed'), 'user_id': user_id, 'fold': False},
             {'sequence': 5, 'name': _('Editing'), 'user_id': user_id, 'fold': False},
+            {'sequence': 6, 'name': _('Delivered'), 'user_id': user_id, 'fold': False},
         ]
-
-    @api.onchange('user_ids')
-    def onchange_user_ids(self):
-        self.change_request_reason = ' <br> '
-        self.state = '01_in_progress'
 
     @api.depends('stage_id')
     def _compute_phase_from_stage(self):
@@ -85,7 +81,7 @@ class ProjectTaskInherited(models.Model):
                 rec.phase = 'proofreading'
             elif rec.stage_id.sequence == 5:
                 rec.phase = 'editing'
-            else:
+            elif 3 > rec.stage_id.sequence > 0:
                 rec.phase = 'translation'
 
     def _check_is_project_manager(self):
@@ -121,7 +117,10 @@ class ProjectTaskInherited(models.Model):
                 if self.editor_ids:
                     for editor in self.editor_ids:
                         user_ids.append(editor.id)
-                self.sudo().write({'user_ids': [(6, 0, user_ids)]})
+                        self.change_request_reason = ' <br> '
+                        self.state = '01_in_progress'
+                self.sudo().write(
+                    {'user_ids': [(6, 0, user_ids)], 'change_request_reason': ' <br> ', 'state': '01_in_progress'})
             return rec
 
     def add_target_files_to_sale_order_line(self):
@@ -131,6 +130,10 @@ class ProjectTaskInherited(models.Model):
                                                                 self.proofreader_target_attachment_ids)
             self.sale_line_id.sudo().write({'target_attachment_ids': order_target_attachment})
             self.send_message_to_salesperson()
+            delivered_stage = self.env['project.task.type'].sudo().search(
+                [('name', '=', 'Delivered'), ('sequence', '=', '6')], limit=1)
+
+            self.sudo().write({'stage_id': delivered_stage.id})
 
 
         elif not self.proofreader_target_attachment_ids and self.translator_target_attachment_ids:
@@ -139,6 +142,9 @@ class ProjectTaskInherited(models.Model):
             self.send_message_to_salesperson()
 
             self.sale_line_id.sudo().write({'target_attachment_ids': order_target_attachment})
+            delivered_stage = self.env['project.task.type'].sudo().search(
+                [('name', '=', 'Delivered'), ('sequence', '=', '6')], limit=1)
+            self.sudo().write({'stage_id': delivered_stage.id})
         else:
             raise ValidationError('No target files yet')
 

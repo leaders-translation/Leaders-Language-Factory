@@ -11,6 +11,7 @@
                 </xpath>
                 <xpath expr="//field[@name='partner_phone_update']" position="before">
                     <field name="partner_company_type"/>
+                    <field name="contact_name" />
                 </xpath>
                 <xpath expr="//field[@name='type']" position="after">
                     <field name="is_lost_stage" invisible="1"/>
@@ -128,6 +129,18 @@
                 </xpath>
             </field>
         </record>
+        <record id="crm_stage_tree_inherit" model="ir.ui.view">
+            <field name="name">crm.stage.tree.inherit</field>
+            <field name="model">crm.stage</field>
+            <field name="inherit_id" ref="crm.crm_stage_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_won']" position="after">
+                    <field name="is_lost"/>
+                    <field name="is_negotiation"/>
+                </xpath>
+            </field>
+        </record>
+
 
         <!--        <record id="view_crm_lead_kanban_inherit" model="ir.ui.view">-->
         <!--            <field name="name">crm.lead.view.kanban.inherit</field>-->

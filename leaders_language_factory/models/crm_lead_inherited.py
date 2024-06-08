@@ -23,6 +23,7 @@ class CrmLeadInherited(models.Model):
     timeline = fields.Selection(AVAILABLE_TIMELINE
                                 , string='Timeline', index=True,
                                 default=AVAILABLE_TIMELINE[0][0], required=True)
+
     partner_company_type = fields.Char(compute='_compute_partner_company_type', string='Customer Type'
                                        , readonly=True, store=True)
 
@@ -58,6 +59,8 @@ class CrmLeadInherited(models.Model):
                 lead.is_lost_stage = True
             else:
                 lead.is_lost_stage = False
+
+
 
     @api.depends('partner_id.company_type')
     def _compute_partner_company_type(self):
